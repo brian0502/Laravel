@@ -9,7 +9,8 @@
         "laravel/framework": "5.2.*",
         "laravelcollective/html": "5.2.*",
         "predis/predis": "~1.1@dev",
-        "cartalyst/alerts": "2.0.*"
+        "cartalyst/alerts": "2.0.*",
+        "recca0120/laravel-tracy": "~1.3.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

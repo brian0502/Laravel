@@ -25,9 +25,8 @@ class HomeController extends Controller
             'content' => 'Welcome To Index!!',
             'sidebar' => PubLib::GetSidebar(),
         );
-        print_r(Session::all());
-
         Cache::put('RedisCache', 'HHHHH', 60);
+
         // Cache::add('RedisCache', 'Test', 60);
     	return view('home.index', $aData);
     	// return response()->view('welcome');
@@ -152,5 +151,17 @@ class HomeController extends Controller
         );
 
         return view('home.movie', $aData);
+    }
+
+    public function project()
+    {
+        $aData  =array(
+            'title'   => 'BrianProject',
+            'content' => 'Welcome To Project!!',
+            'sidebar' => PubLib::GetSidebar(),
+            'data'    => $this->Home_model->get_project(),
+        );
+
+        return view('home.project' ,$aData);
     }
 }

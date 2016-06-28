@@ -19,6 +19,7 @@ Route::group(['prefix'=>'home'], function(){
 	Route::get('login', 'HomeController@login');
 	Route::get('logout', 'HomeController@logout');
 	Route::get('movie', 'HomeController@movie');
+	Route::get('project', 'HomeController@project');
 	//Route::get('{title}/{message}', 'HomeController@show');
 	Route::post('do_signup', 'HomeController@do_signup'); //若有form表單時使用
 	Route::post('do_login', 'HomeController@do_login'); //若有form表單時使用

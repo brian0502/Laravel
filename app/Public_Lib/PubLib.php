@@ -55,12 +55,14 @@ class PubLib
 
 		$aSidebar = array(
 						0 => array(
-								'註冊' => 'http://localhost/home/signup/',
-								'登入' => 'http://localhost/home/login/',
+								'註冊' => '../home/signup/',
+								'登入' => '../home/login/',
+                                '作品' => '../home/project/',
 							),
 						1 => array(
-								'影片' => 'http://localhost/home/movie/',
-								'登出' => 'http://localhost/home/logout/',
+								'影片' => '../home/movie/',
+								'登出' => '../home/logout/',
+                                '作品' => '../home/project/',
 							),
 					);
 		foreach($aSidebar as $login_status => $sidebar_val)

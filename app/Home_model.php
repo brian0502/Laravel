@@ -62,4 +62,19 @@ class Home_model extends Model
 	{
 		return TRUE;
 	}
+
+	public function get_project()
+	{
+		$aData = array();
+		$aProject = DB::table('project')->get();
+
+		foreach($aProject as $k => $v)
+		{
+			foreach($v as $k1 => $v1)
+			{
+				$aData[$k][$k1] = $v1;
+			}
+		}
+		return $aData;
+	}
 }

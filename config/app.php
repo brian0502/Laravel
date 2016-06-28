@@ -165,6 +165,7 @@ return [
          * 自定義套件
          */
         'Cartalyst\Alerts\Laravel\AlertsServiceProvider',
+        Recca0120\LaravelTracy\ServiceProvider::class,
     ],
 
     /*
