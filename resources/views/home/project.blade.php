@@ -6,7 +6,7 @@
 			<section class="grid">
 				@foreach($data as $key => $val)
 					<a class="grid__item" href="{{ $val['project_url'] }}" target="_blank">
-						<img src="<?php echo empty($val['project_img'])? '':'/project_img/'.$val['project_img'];?>" style="width: 100%;">
+						<?php echo empty($val['project_img'])? '':'<img src="/project_img/'.$val['project_img'].'" style="width: 100%;">';?>
 						<!-- <h2 class="title title--preview">{{ $val['project_name'] }}</h2> -->
 						<div class="loader"></div>
 						<span class="category">{{ $val['project_name'] }}</span>
