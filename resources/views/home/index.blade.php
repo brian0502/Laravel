@@ -1,7 +1,7 @@
 @extends('app')
 
 @section('content')
-	<a href="#">
+	<a href="#" class="a1">
 		<div>
 			<h1>Material Menu</h1>
 	        <div id="github-icons"></div>

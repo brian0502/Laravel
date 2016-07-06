@@ -40,16 +40,26 @@ body {
 
 a {
   outline: none;
-  color: #333;
+  color: #81c483;
   text-decoration: none;
 }
 
 a:hover,
 a:focus {
-  color: #81c483;
+  color: #333;
   outline: none;
 }
 
+.a1{
+  outline: none;
+  color: #333;
+  text-decoration: none;
+}
+
+.a1:hover, a:focus {
+  color: #81c483;
+  outline: none;
+}
 button:focus {
   outline: none;
 }
