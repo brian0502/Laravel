@@ -2,7 +2,7 @@
 
 @section('content')
 		@if (count($data) > 0)
-		<div id="theGrid" class="main">
+		<div id="theGrid">
 			<section class="grid">
 				@foreach($data as $key => $val)
 					<a class="grid__item" href="{{ $val['url'] }}" target="_blank">
