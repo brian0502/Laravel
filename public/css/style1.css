@@ -40,13 +40,13 @@ body {
 
 a {
   outline: none;
-  color: #81c483;
+  color: #333;
   text-decoration: none;
 }
 
 a:hover,
 a:focus {
-  color: #333;
+  color: #81c483;
   outline: none;
 }
 

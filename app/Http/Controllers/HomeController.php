@@ -159,7 +159,19 @@ class HomeController extends Controller
             'title'   => 'BrianProject',
             'content' => 'Welcome To Project!!',
             'sidebar' => PubLib::GetSidebar(),
-            'data'    => $this->Home_model->get_project(),
+            'data'    => $this->Home_model->get_project_or_note('Project'),
+        );
+
+        return view('home.project' ,$aData);
+    }
+
+    public function note()
+    {
+        $aData  =array(
+            'title'   => 'Brian Study Note',
+            'content' => 'Welcome To Study Note!!',
+            'sidebar' => PubLib::GetSidebar(),
+            'data'    => $this->Home_model->get_project_or_note('note'),
         );
 
         return view('home.project' ,$aData);

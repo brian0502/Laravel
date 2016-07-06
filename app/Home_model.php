@@ -63,18 +63,22 @@ class Home_model extends Model
 		return TRUE;
 	}
 
-	public function get_project()
+	public function get_project_or_note( $action = NULL )
 	{
 		$aData = array();
-		$aProject = DB::table('project')->get();
-
-		foreach($aProject as $k => $v)
+		if(!empty($action))
 		{
-			foreach($v as $k1 => $v1)
+			$aProject_Note = DB::table( $action )->where('status', '=', 1)->get();
+
+			foreach($aProject_Note as $k => $v)
 			{
-				$aData[$k][$k1] = $v1;
+				foreach($v as $k1 => $v1)
+				{
+					$aData[$k][$k1] = $v1;
+				}
 			}
 		}
+
 		return $aData;
 	}
 }

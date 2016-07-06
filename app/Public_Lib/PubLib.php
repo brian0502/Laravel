@@ -58,11 +58,13 @@ class PubLib
 								'註冊' => '../home/signup/',
 								'登入' => '../home/login/',
                                 '作品' => '../home/project/',
+                                '學習筆記' => '../home/note/'
 							),
 						1 => array(
 								'影片' => '../home/movie/',
 								'登出' => '../home/logout/',
                                 '作品' => '../home/project/',
+                                '學習筆記' => '../home/note/'
 							),
 					);
 		foreach($aSidebar as $login_status => $sidebar_val)
