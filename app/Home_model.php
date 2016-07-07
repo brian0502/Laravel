@@ -63,22 +63,61 @@ class Home_model extends Model
 		return TRUE;
 	}
 
-	public function get_project_or_note( $action = NULL )
+	public function get_project_or_note( $action = NULL, $search_id = NULL )
 	{
 		$aData = array();
 		if(!empty($action))
 		{
-			$aProject_Note = DB::table( $action )->where('status', '=', 1)->get();
+			$aProject_Note = !empty( $search_id )?
+			DB::table( $action )
+			->where($action.'_id', '=', $search_id)
+			->where('status', '=', 1)
+			->get()
+			:
+			DB::table( $action )
+			->where('status', '=', 1)
+			->get();
 
 			foreach($aProject_Note as $k => $v)
 			{
 				foreach($v as $k1 => $v1)
 				{
-					$aData[$k][$k1] = $v1;
+					switch($k1)
+					{
+						case 'content':
+							$aData[$k][$k1] = nl2br(json_decode($v1));
+							break;
+						default:
+							$aData[$k][$k1] = $v1;
+							break;
+					}
 				}
 			}
 		}
 
 		return $aData;
 	}
+
+	public function add_note($aData=array())
+	{
+		if(!empty($aData))
+		{
+			foreach($aData as $key => $val)
+			{
+				switch($key)
+				{
+					case 'content':
+						$aData[$key] = json_encode($val);
+						break;
+				}
+			}
+	    	DB::table('note')->insert($aData);
+	    	return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
 }

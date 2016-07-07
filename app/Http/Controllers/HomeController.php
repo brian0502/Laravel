@@ -24,6 +24,7 @@ class HomeController extends Controller
             'title'   => 'BrianIndex',
             'content' => 'Welcome To Index!!',
             'sidebar' => PubLib::GetSidebar(),
+            'data'    => $this->Home_model->get_project_or_note('note'),
         );
         Cache::put('RedisCache', 'HHHHH', 60);
 
@@ -63,12 +64,20 @@ class HomeController extends Controller
     	return view('home.signup', $aData);
     }
 
-    public function do_signup(Request $request)
+    public function do_signup( Request $request )
     {
-        $this->validate($request, [
+        $v = Validator::make($request->all(), [
             'name'      => 'required',
             'password'  => 'required',
         ]);
+
+        if ($v->fails())
+        {
+            Alert::error('註冊錯誤!');
+            return redirect()->back()->withErrors($v->errors());
+        }
+
+
     	foreach($request->input() as $k => $v)
     	{
     		switch($k)
@@ -100,12 +109,18 @@ class HomeController extends Controller
 	    }
     }
 
-    public function do_login(Request $request)
+    public function do_login( Request $request )
     {
-        $this->validate($request, [
+        $v = Validator::make($request->all(), [
             'name'      => 'required',
             'password'  => 'required',
         ]);
+
+        if ($v->fails())
+        {
+            Alert::error('登入錯誤!');
+            return redirect()->back()->withErrors($v->errors());
+        }
 
         foreach($request->input() as $k => $v)
         {
@@ -132,8 +147,8 @@ class HomeController extends Controller
             Alert::error('登入失敗!');
             return redirect('home/login');
             exit;
-    }
         }
+    }
 
     public function movie()
     {
@@ -165,15 +180,68 @@ class HomeController extends Controller
         return view('home.project' ,$aData);
     }
 
-    public function note()
+    public function note( Request $request, $note_id = NULL )
     {
         $aData  =array(
             'title'   => 'Brian Study Note',
             'content' => 'Welcome To Study Note!!',
             'sidebar' => PubLib::GetSidebar(),
-            'data'    => $this->Home_model->get_project_or_note('note'),
+            'data'    => $this->Home_model->get_project_or_note('note', $note_id),
+            'request_url' => PubLib::GetUrl($request),
         );
 
-        return view('home.project' ,$aData);
+        return view('home.note' ,$aData);
+    }
+
+    public function add_note()
+    {
+        $aData  =array(
+            'title'   => '新增學習筆記',
+            'content' => 'Welcome To Study Note!!',
+            'sidebar' => PubLib::GetSidebar(),
+        );
+
+        return view('home.add_note', $aData);
+    }
+
+    public function do_add_note( Request $request )
+    {
+        $v = Validator::make($request->all(), [
+            'title'      => 'required',
+            'content'  => 'required',
+        ]);
+
+        if ($v->fails())
+        {
+            Alert::error('新增筆記失敗');
+            return redirect()->back()->withErrors($v->errors());
+        }
+
+        foreach($request->input() as $k => $v)
+        {
+            switch($k)
+            {
+                case '_method':
+                    break;
+                case '_token':
+                    break;
+                default:
+                    $aData[$k] = $v;
+                    break;
+            }
+        }
+
+        $result = $this->Home_model->add_note($aData);
+
+        if($result===TRUE)
+        {
+            return redirect('/');
+        }
+        else
+        {
+            Alert::error('新增筆記失敗!');
+            return redirect('home/add_note');
+            exit;
+        }
     }
 }

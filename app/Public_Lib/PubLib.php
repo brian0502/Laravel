@@ -55,16 +55,17 @@ class PubLib
 
 		$aSidebar = array(
 						0 => array(
-								'註冊' => '../home/signup/',
-								'登入' => '../home/login/',
-                                '作品' => '../home/project/',
-                                '學習筆記' => '../home/note/'
+								'註冊' => url('home/signup'),
+								'登入' => url('home/login'),
+                                '作品' => url('home/project'),
+                                '學習筆記' => url('home/note')
 							),
 						1 => array(
-								'影片' => '../home/movie/',
-								'登出' => '../home/logout/',
-                                '作品' => '../home/project/',
-                                '學習筆記' => '../home/note/'
+								'影片' => url('home/movie'),
+								'登出' => url('home/logout'),
+                                '作品' =>  url('home/project'),
+                                '學習筆記' => url('home/note')
+
 							),
 					);
 		foreach($aSidebar as $login_status => $sidebar_val)
@@ -83,4 +84,15 @@ class PubLib
 
 		return $aData;
 	}
+
+    public static function GetUrl( $request = '' )
+    {
+        if(!empty($request))
+        {
+            $request_url = $request->path();
+            $request_url = explode( '/', $request_url );
+            $request_url= !empty($request_url[1])? $request_url[1]:'';
+        }
+        return  $request_url;
+    }
 }
