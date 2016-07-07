@@ -11,8 +11,10 @@
 			<!-- text("text_id/name", "text_value",array('class' => 'class','style' => 'style'))}}  -->
 		    {{Form::label("帳號", "帳號",array('class' => '','style' => ''))}}<br>
 		    {{Form::text("name", "",array('class' => '','style' => ''))}}<br>
+		    {!! $errors->first('name', '<p>:message</p>') !!}
 		    {{Form::label("密碼", "密碼",array('class' => '','style' => ''))}}<br>
 		    {{Form::password("password", "",array('class' => '','style' => ''))}}<br>
+     	 	{!! $errors->first('password', '<p>:message</p>') !!}
 			@if($action==='signup')
 				{{Form::submit("註冊會員")}}
 			@elseif($action==='login')
@@ -20,15 +22,6 @@
 			@endif
 	    {{Form::close()}}
 	</div>
-	@if (count($errors) > 0)
-	    <div class="alert alert-danger" style="text-align:center;">
-	        <ul>
-	            @foreach ($errors->all() as $error)
-	        <li>{{ $error }}</li>
-	            @endforeach
-	        </ul>
-	    </div>
-	@endif
 @stop
 
 @section('script')

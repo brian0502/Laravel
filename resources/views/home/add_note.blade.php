@@ -7,20 +7,13 @@
 			<!-- text("text_id/name", "text_value",array('class' => 'class','style' => 'style'))}}  -->
 		    {{Form::label("標題", "標題",array('class' => '','style' => ''))}}<br>
 		    {{Form::text("title", "",array('class' => '','style' => ''))}}<br>
+		    {!! $errors->first('title', '<p>:message</p>') !!}
 		    {{Form::label("內容", "內容",array('class' => '','style' => ''))}}<br>
 		    {{Form::textarea("content", "",array('class' => '','style' => ''))}}<br>
-				{{Form::submit("新增筆記")}}
+		    {!! $errors->first('content', '<p>:message</p>') !!}
+			{{Form::submit("新增筆記")}}
 	    {{Form::close()}}
 	</div>
-	@if (count($errors) > 0)
-	    <div class="alert alert-danger" style="text-align:center;">
-	        <ul>
-	            @foreach ($errors->all() as $error)
-	        <li>{{ $error }}</li>
-	            @endforeach
-	        </ul>
-	    </div>
-	@endif
 @stop
 
 @section('script')
