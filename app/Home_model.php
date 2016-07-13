@@ -72,10 +72,12 @@ class Home_model extends Model
 			DB::table( $action )
 			->where($action.'_id', '=', $search_id)
 			->where('status', '=', 1)
+			->orderBy($action.'_id', 'DESC')
 			->get()
 			:
 			DB::table( $action )
 			->where('status', '=', 1)
+			->orderBy($action.'_id', 'DESC')
 			->get();
 
 			foreach($aProject_Note as $k => $v)
