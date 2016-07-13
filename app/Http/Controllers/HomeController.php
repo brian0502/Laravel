@@ -24,7 +24,7 @@ class HomeController extends Controller
             'title'   => 'BrianIndex',
             'content' => 'Welcome To Index!!',
             'sidebar' => PubLib::GetSidebar(),
-            'data'    => $this->Home_model->get_project_or_note('note'),
+            'data'    => $this->Home_model->get_project_or_note('note', 0, 100),
         );
         Cache::put('RedisCache', 'HHHHH', 60);
 
@@ -182,11 +182,12 @@ class HomeController extends Controller
 
     public function note( Request $request, $note_id = NULL )
     {
+        $substr_num = !empty($note_id)? 0:100;
         $aData  =array(
             'title'   => 'Brian Study Note',
             'content' => 'Welcome To Study Note!!',
             'sidebar' => PubLib::GetSidebar(),
-            'data'    => $this->Home_model->get_project_or_note('note', $note_id),
+            'data'    => $this->Home_model->get_project_or_note('note', $note_id, $substr_num),
             'request_url' => PubLib::GetUrl($request),
         );
 

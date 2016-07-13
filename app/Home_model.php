@@ -63,7 +63,7 @@ class Home_model extends Model
 		return TRUE;
 	}
 
-	public function get_project_or_note( $action = NULL, $search_id = NULL )
+	public function get_project_or_note( $action = NULL, $search_id = NULL, $sbustr_num = NULL )
 	{
 		$aData = array();
 		if(!empty($action))
@@ -85,7 +85,12 @@ class Home_model extends Model
 					switch($k1)
 					{
 						case 'content':
-							$aData[$k][$k1] = nl2br(json_decode($v1));
+							$v1 = json_decode($v1);
+							if(!empty($sbustr_num)&&empty($search_id))
+							{
+								$v1 = PubLib::Cut_content($v1, $sbustr_num);
+							}
+							$aData[$k][$k1] = nl2br($v1);
 							break;
 						default:
 							$aData[$k][$k1] = $v1;

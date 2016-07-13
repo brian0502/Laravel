@@ -95,4 +95,24 @@ class PubLib
         }
         return  $request_url;
     }
+
+    /**
+    *  @濾掉HTML，並且擷取設定的字數
+    *  @param $html = HTML source
+    *  @param $html = 顯示字元數
+    */
+    public static function Cut_content( $html = NULL, $num = NULL )
+    {
+        $content = strip_tags(stripcslashes(trim($html))); //去除HTML標籤
+        $sub_content = mb_substr($content, 0, $num, 'UTF-8'); //擷取子字串
+        if(strlen($content) > strlen($sub_content))
+        {
+            $s_content = $sub_content.'...';
+        }
+        else
+        {
+            $s_content = $sub_content;
+        }
+        return $s_content;
+    }
 }
