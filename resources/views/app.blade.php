@@ -21,7 +21,7 @@
             <main>
                 <div class="container">
                     <section>
-                        <h1 style="text-align:center;">{{ !empty($title)? $title:'Default Title' }}</h1>
+                        <h1 style="text-align:center;">{{ !empty($title)? $title:'Default Title' }}___TEST</h1>
                         <div id="github-icons"></div>
                         @yield('content')
                     </section>
