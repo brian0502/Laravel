@@ -2,35 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Home_model;     //引用Home_model
-use Validator;			//引用驗證
-use Illuminate\Http\Request;
-use Session;
-use Redis1;
+use Alert;
+use App\HomeModel;
 use Cache;
-use PubLib;             //引用自定義Function
-use Alert;              //引用Alert Plugin https://cartalyst.com/manual/alerts/2.0#generating-the-alerts-view
+use Illuminate\Http\Request;
+use PubLib;
+use Session;
+use Validator;
 
 class HomeController extends Controller
 {
     public function __construct()
     {
-        $this->Home_model    = new Home_model;
+        $this->HomeModel = new HomeModel;
     }
 
     public function index()
     {
-        $aData  =array(
+        $aData = array(
             'title'   => 'BrianIndex',
             'content' => 'Welcome To Index!!',
             'sidebar' => PubLib::GetSidebar(),
-            'data'    => $this->Home_model->get_project_or_note('note', 0, 100),
+            'data'    => $this->HomeModel->getProjectOrNote('note', 0, 100),
         );
         Cache::put('RedisCache', 'HHHHH', 60);
 
         // Cache::add('RedisCache', 'Test', 60);
-    	return view('home.index', $aData);
-    	// return response()->view('welcome');
+        return view('home.index', $aData);
+        // return response()->view('welcome');
     }
 
     public function logout()
@@ -42,7 +41,7 @@ class HomeController extends Controller
 
     public function login()
     {
-        $aData  =array(
+        $aData = array(
             'title'   => '登入',
             'content' => 'Welcome To Index!!',
             'action'  => 'login',
@@ -54,78 +53,30 @@ class HomeController extends Controller
 
     public function signup()
     {
-        $aData  =array(
+        $aData = array(
             'title'   => '註冊會員',
             'content' => 'Welcome To Index!!',
             'action'  => 'signup',
             'sidebar' => PubLib::GetSidebar(),
         );
 
-    	return view('home.signup', $aData);
+        return view('home.signup', $aData);
     }
 
-    public function do_signup( Request $request )
+    public function doSignup(Request $request)
     {
         $v = Validator::make($request->all(), [
-            'name'      => 'required',
-            'password'  => 'required',
+            'name'     => 'required',
+            'password' => 'required',
         ]);
 
-        if ($v->fails())
-        {
+        if ($v->fails()) {
             Alert::error('註冊錯誤!');
             return redirect()->back()->withErrors($v->errors());
         }
 
-
-    	foreach($request->input() as $k => $v)
-    	{
-    		switch($k)
-    		{
-    			case '_method':
-    				break;
-    			case '_token':
-    				break;
-    			default:
-    				$aData[$k] = $v;
-    				break;
-    		}
-    	}
-
-    	$result = $this->Home_model->signup($aData);
-
-	    if($result==TRUE)
-	    {
-            Session::put('login', TRUE);
-            Alert::error('新增會員成功!');
-	    	return redirect('/');
-	    	exit;
-	    }
-	    else
-	    {
-            Alert::error('此會員帳號已有人使用，請更換!');
-	    	return redirect('home/signup');
-	    	exit;
-	    }
-    }
-
-    public function do_login( Request $request )
-    {
-        $v = Validator::make($request->all(), [
-            'name'      => 'required',
-            'password'  => 'required',
-        ]);
-
-        if ($v->fails())
-        {
-            Alert::error('登入錯誤!');
-            return redirect()->back()->withErrors($v->errors());
-        }
-
-        foreach($request->input() as $k => $v)
-        {
-            switch($k)
-            {
+        foreach ($request->input() as $k => $v) {
+            switch ($k) {
                 case '_method':
                     break;
                 case '_token':
@@ -136,14 +87,49 @@ class HomeController extends Controller
             }
         }
 
-        $result = $this->Home_model->login($aData);
+        $result = $this->HomeModel->signup($aData);
 
-        if($result===TRUE)
-        {
+        if ($result == true) {
+            Session::put('login', true);
+            Alert::error('新增會員成功!');
             return redirect('/');
+            exit;
+        } else {
+            Alert::error('此會員帳號已有人使用，請更換!');
+            return redirect('home/signup');
+            exit;
         }
-        else
-        {
+    }
+
+    public function doLogin(Request $request)
+    {
+        $v = Validator::make($request->all(), [
+            'name'     => 'required',
+            'password' => 'required',
+        ]);
+
+        if ($v->fails()) {
+            Alert::error('登入錯誤!');
+            return redirect()->back()->withErrors($v->errors());
+        }
+
+        foreach ($request->input() as $k => $v) {
+            switch ($k) {
+                case '_method':
+                    break;
+                case '_token':
+                    break;
+                default:
+                    $aData[$k] = $v;
+                    break;
+            }
+        }
+
+        $result = $this->HomeModel->login($aData);
+
+        if ($result === true) {
+            return redirect('/');
+        } else {
             Alert::error('登入失敗!');
             return redirect('home/login');
             exit;
@@ -152,14 +138,13 @@ class HomeController extends Controller
 
     public function movie()
     {
-        if(PubLib::ChkLogin()==FALSE)
-        {
+        if (PubLib::ChkLogin() == false) {
             Alert::error('請先登入!');
             return redirect('home/login');
             exit;
         }
 
-        $aData  =array(
+        $aData = array(
             'title'   => 'BrianMovie',
             'content' => 'Welcome To Movie!!',
             'sidebar' => PubLib::GetSidebar(),
@@ -170,33 +155,33 @@ class HomeController extends Controller
 
     public function project()
     {
-        $aData  =array(
+        $aData = array(
             'title'   => 'BrianProject',
             'content' => 'Welcome To Project!!',
             'sidebar' => PubLib::GetSidebar(),
-            'data'    => $this->Home_model->get_project_or_note('Project'),
+            'data'    => $this->HomeModel->getProjectOrNote('Project'),
         );
 
-        return view('home.project' ,$aData);
+        return view('home.project', $aData);
     }
 
-    public function note( Request $request, $note_id = NULL )
+    public function note(Request $request, $note_id = null)
     {
-        $substr_num = !empty($note_id)? 0:100;
-        $aData  =array(
-            'title'   => 'Brian Study Note',
-            'content' => 'Welcome To Study Note!!',
-            'sidebar' => PubLib::GetSidebar(),
-            'data'    => $this->Home_model->get_project_or_note('note', $note_id, $substr_num),
+        $substr_num = !empty($note_id) ? 0 : 100;
+        $aData      = array(
+            'title'       => 'Brian Study Note',
+            'content'     => 'Welcome To Study Note!!',
+            'sidebar'     => PubLib::GetSidebar(),
+            'data'        => $this->HomeModel->getProjectOrNote('note', $note_id, $substr_num),
             'request_url' => PubLib::GetUrl($request),
         );
 
-        return view('home.note' ,$aData);
+        return view('home.note', $aData);
     }
 
-    public function add_note()
+    public function addNote()
     {
-        $aData  =array(
+        $aData = array(
             'title'   => '新增學習筆記',
             'content' => 'Welcome To Study Note!!',
             'sidebar' => PubLib::GetSidebar(),
@@ -205,23 +190,20 @@ class HomeController extends Controller
         return view('home.add_note', $aData);
     }
 
-    public function do_add_note( Request $request )
+    public function doAddNote(Request $request)
     {
         $v = Validator::make($request->all(), [
-            'title'      => 'required',
-            'content'  => 'required',
+            'title'   => 'required',
+            'content' => 'required',
         ]);
 
-        if ($v->fails())
-        {
+        if ($v->fails()) {
             Alert::error('新增筆記失敗');
             return redirect()->back()->withErrors($v->errors());
         }
 
-        foreach($request->input() as $k => $v)
-        {
-            switch($k)
-            {
+        foreach ($request->input() as $k => $v) {
+            switch ($k) {
                 case '_method':
                     break;
                 case '_token':
@@ -232,14 +214,11 @@ class HomeController extends Controller
             }
         }
 
-        $result = $this->Home_model->add_note($aData);
+        $result = $this->HomeModel->addNote($aData);
 
-        if($result===TRUE)
-        {
+        if ($result === true) {
             return redirect('/');
-        }
-        else
-        {
+        } else {
             Alert::error('新增筆記失敗!');
             return redirect('home/add_note');
             exit;
